@@ -62,6 +62,78 @@ func (tt *Test) Run(t *testing.T, name string, fn func(pw *TestContext)) {
 	})
 }
 
+// Suite represents a test group created by Describe.
+type Suite struct {
+	tt         *Test
+	t          *testing.T
+	beforeEach []func(*TestContext)
+	afterEach  []func(*TestContext)
+	parent     *Suite
+}
+
+// Describe creates a grouped test suite with hooks.
+func (tt *Test) Describe(t *testing.T, name string, fn func(s *Suite)) {
+	t.Run(name, func(t *testing.T) {
+		s := &Suite{tt: tt, t: t}
+		fn(s)
+	})
+}
+
+// Describe creates a nested suite inheriting parent hooks.
+func (s *Suite) Describe(name string, fn func(s *Suite)) {
+	s.t.Run(name, func(t *testing.T) {
+		child := &Suite{tt: s.tt, t: t, parent: s}
+		fn(child)
+	})
+}
+
+// BeforeEach registers a hook that runs before each test.
+func (s *Suite) BeforeEach(fn func(pw *TestContext)) {
+	s.beforeEach = append(s.beforeEach, fn)
+}
+
+// AfterEach registers a hook that runs after each test.
+func (s *Suite) AfterEach(fn func(pw *TestContext)) {
+	s.afterEach = append(s.afterEach, fn)
+}
+
+// Test runs a test within the suite, executing hooks.
+func (s *Suite) Test(name string, fn func(pw *TestContext)) {
+	s.t.Run(name, func(t *testing.T) {
+		t.Parallel()
+		pw := s.tt.createContext(t)
+		defer pw.cleanup()
+
+		// Collect hooks from parent chain (outermost first)
+		befores, afters := s.collectHooks()
+		for _, hook := range befores {
+			hook(pw)
+		}
+		// Register afters as cleanup (reverse order)
+		for i := len(afters) - 1; i >= 0; i-- {
+			after := afters[i]
+			t.Cleanup(func() { after(pw) })
+		}
+		fn(pw)
+	})
+}
+
+// collectHooks walks parent chain, returns hooks outermost-first.
+func (s *Suite) collectHooks() (befores []func(*TestContext), afters []func(*TestContext)) {
+	var chain []*Suite
+	for cur := s; cur != nil; cur = cur.parent {
+		chain = append(chain, cur)
+	}
+	for i, j := 0, len(chain)-1; i < j; i, j = i+1, j-1 {
+		chain[i], chain[j] = chain[j], chain[i]
+	}
+	for _, suite := range chain {
+		befores = append(befores, suite.beforeEach...)
+		afters = append(afters, suite.afterEach...)
+	}
+	return
+}
+
 // createContext launches a browser, creates a context and page,
 // and returns a fully-wired TestContext.
 func (tt *Test) createContext(t *testing.T) *TestContext {

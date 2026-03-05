@@ -117,3 +117,84 @@ func TestExpectPageURL(t *testing.T) {
 		pw.Expect(pw.Page).ToHaveURL("data:text/html")
 	})
 }
+
+func TestDescribeWithHooks(t *testing.T) {
+	test := gowright.NewTest()
+	test.Describe(t, "suite with hooks", func(s *gowright.Suite) {
+		s.BeforeEach(func(pw *gowright.TestContext) {
+			pw.Page.Goto("data:text/html,<title>Hook Page</title><div id='content'>ready</div>")
+		})
+
+		s.Test("first test", func(pw *gowright.TestContext) {
+			title := pw.Page.Title()
+			if title != "Hook Page" {
+				t.Errorf("expected 'Hook Page', got %q", title)
+			}
+		})
+
+		s.Test("second test", func(pw *gowright.TestContext) {
+			text := pw.Page.Locator("#content").TextContent()
+			if text != "ready" {
+				t.Errorf("expected 'ready', got %q", text)
+			}
+		})
+	})
+}
+
+func TestDescribeNested(t *testing.T) {
+	test := gowright.NewTest()
+	test.Describe(t, "outer", func(s *gowright.Suite) {
+		s.BeforeEach(func(pw *gowright.TestContext) {
+			pw.Page.Goto("data:text/html,<title>Nested</title>")
+		})
+
+		s.Describe("inner", func(s *gowright.Suite) {
+			s.Test("has title", func(pw *gowright.TestContext) {
+				title := pw.Page.Title()
+				if title != "Nested" {
+					t.Errorf("expected 'Nested', got %q", title)
+				}
+			})
+		})
+	})
+}
+
+func TestPlaywrightStyle(t *testing.T) {
+	test := gowright.NewTest()
+
+	test.Run(t, "simple navigation", func(pw *gowright.TestContext) {
+		pw.Page.Goto("data:text/html,<title>Example</title><h1>Hello World</h1><p>Content here</p>")
+		pw.Expect(pw.Page).ToHaveTitle("Example")
+		pw.Expect(pw.Page.Locator("h1")).ToHaveText("Hello World")
+		pw.Expect(pw.Page.Locator("p")).ToContainText("Content")
+	})
+
+	test.Describe(t, "form interactions", func(s *gowright.Suite) {
+		s.BeforeEach(func(pw *gowright.TestContext) {
+			pw.Page.Goto(`data:text/html,
+				<form>
+					<input id="name" type="text" placeholder="Name"/>
+					<input id="email" type="email" placeholder="Email"/>
+					<input id="agree" type="checkbox"/>
+					<button type="submit" onclick="event.preventDefault();document.title='submitted'">Submit</button>
+				</form>`)
+		})
+
+		s.Test("fill and submit", func(pw *gowright.TestContext) {
+			pw.Page.Locator("#name").Fill("John Doe")
+			pw.Page.Locator("#email").Fill("john@example.com")
+			pw.Page.Locator("#agree").Check()
+			pw.Page.Locator("button").Click()
+
+			pw.Expect(pw.Page.Locator("#name")).ToHaveValue("John Doe")
+			pw.Expect(pw.Page.Locator("#agree")).ToBeChecked()
+			pw.Expect(pw.Page).ToHaveTitle("submitted")
+		})
+
+		s.Test("clear input", func(pw *gowright.TestContext) {
+			pw.Page.Locator("#name").Fill("temp")
+			pw.Page.Locator("#name").Clear()
+			pw.Expect(pw.Page.Locator("#name")).ToHaveValue("")
+		})
+	})
+}
