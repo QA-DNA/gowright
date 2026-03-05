@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/PeterStoica/gowright"
+	"github.com/QA-DNA/gowright"
 )
 
 func TestBrowserContexts(t *testing.T) {

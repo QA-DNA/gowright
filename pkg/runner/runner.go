@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/PeterStoica/gowright/pkg/browser"
-	"github.com/PeterStoica/gowright/pkg/browser/chromium"
-	"github.com/PeterStoica/gowright/pkg/config"
+	"github.com/QA-DNA/gowright/pkg/browser"
+	"github.com/QA-DNA/gowright/pkg/browser/chromium"
+	"github.com/QA-DNA/gowright/pkg/config"
 )
 
 type TestOptions struct {

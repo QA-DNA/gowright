@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/PeterStoica/gowright"
+	"github.com/QA-DNA/gowright"
 )
 
 func TestNewTestDefaults(t *testing.T) {

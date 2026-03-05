@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/PeterStoica/gowright"
+	"github.com/QA-DNA/gowright"
 )
 
 // Helper to get a page with a loaded HTML document.

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/PeterStoica/gowright/pkg/browser"
+	"github.com/QA-DNA/gowright/pkg/browser"
 )
 
 // TestContext is the fixture passed to test functions.

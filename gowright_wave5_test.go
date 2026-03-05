@@ -3,7 +3,7 @@ package gowright_test
 import (
 	"testing"
 
-	"github.com/PeterStoica/gowright"
+	"github.com/QA-DNA/gowright"
 )
 
 func TestDownloadType(t *testing.T) {

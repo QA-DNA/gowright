@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/PeterStoica/gowright/pkg/cdp"
+	"github.com/QA-DNA/gowright/pkg/cdp"
 )
 
 type Mouse struct {

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/PeterStoica/gowright/pkg/cdp"
+	"github.com/QA-DNA/gowright/pkg/cdp"
 )
 
 func checkVisible(ctx context.Context, session *cdp.Session, objectID string) error {

@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/PeterStoica/gowright/pkg/expect"
-	"github.com/PeterStoica/gowright/pkg/runner"
+	"github.com/QA-DNA/gowright/pkg/expect"
+	"github.com/QA-DNA/gowright/pkg/runner"
 )
 
 func TestExpectToBeVisible(t *testing.T) {

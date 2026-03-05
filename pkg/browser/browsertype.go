@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/PeterStoica/gowright/pkg/browser/chromium"
+	"github.com/QA-DNA/gowright/pkg/browser/chromium"
 )
 
 type BrowserType struct {

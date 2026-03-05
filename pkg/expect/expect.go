@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/PeterStoica/gowright/pkg/browser"
+	"github.com/QA-DNA/gowright/pkg/browser"
 )
 
 var DefaultTimeout = 5 * time.Second

@@ -1,4 +1,4 @@
-module github.com/PeterStoica/gowright
+module github.com/QA-DNA/gowright
 
 go 1.25.0
 

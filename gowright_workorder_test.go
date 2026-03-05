@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/PeterStoica/gowright"
-	"github.com/PeterStoica/gowright/pkg/expect"
+	"github.com/QA-DNA/gowright"
+	"github.com/QA-DNA/gowright/pkg/expect"
 )
 
 func TestCreateWorkOrder(t *testing.T) {

@@ -1,7 +1,8 @@
 # Reference sources
 _reference/
 
-# Go binaries
+# Compiled binaries
+youtube
 *.exe
 *.exe~
 *.dll

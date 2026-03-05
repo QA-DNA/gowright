@@ -4,10 +4,10 @@ import (
 	"context"
 	"sync"
 
-	"github.com/PeterStoica/gowright/pkg/browser"
-	"github.com/PeterStoica/gowright/pkg/browser/chromium"
-	"github.com/PeterStoica/gowright/pkg/cdp"
-	"github.com/PeterStoica/gowright/pkg/config"
+	"github.com/QA-DNA/gowright/pkg/browser"
+	"github.com/QA-DNA/gowright/pkg/browser/chromium"
+	"github.com/QA-DNA/gowright/pkg/cdp"
+	"github.com/QA-DNA/gowright/pkg/config"
 )
 
 var _ = (*cdp.Conn)(nil)
