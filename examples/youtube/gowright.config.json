@@ -1,0 +1,9 @@
+{
+  "headless": false,
+  "slowMo": "500ms",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "timeout": "30s"
+}
